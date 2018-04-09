@@ -158,6 +158,7 @@ program GETPAR
 
 !!  test wether
     NARGIN = iargc()
+    
     IF(nargin<=0 .OR. nargin>1)THEN
         WRITE(IDVOUT,FMT='(A)')'getpar fatal error: the size of parameters should equal 1'
         STOP
