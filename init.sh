@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-exeFiles=("ddpostprocess" "ddscat" "calltarget" "vtrconvert" "getpar", "ddp.sh")
+exeFiles=("ddpostprocess" "ddscat" "calltarget" "vtrconvert" "getpar", "ddp.sh", "cq.sh")
 currentDir=`pwd`
 
 for exeFile in ${exeFiles[@]};do

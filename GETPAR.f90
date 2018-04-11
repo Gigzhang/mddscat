@@ -12,11 +12,16 @@ program GETPAR
     CHARACTER*60 :: CFLENAME
     CHARACTER*26 :: CSTAMP
     !!
-    CHARACTER*20 :: FLAG
+    CHARACTER*20 :: FLAG,XOFFSET,XNSLICE
 
     INTEGER :: IDVOUT,NAT0,NCOMP,NRFLDB,NX,NY,NZ,VERSNUM
     !!
     INTEGER :: NARGIN
+
+    !!
+    REAL(WP) :: OFFSET
+    INTEGER :: NSLICE
+
 
 
     REAL(WP) ::                                             &
@@ -159,11 +164,24 @@ program GETPAR
 !!  test wether
     NARGIN = iargc()
     
-    IF(nargin<=0 .OR. nargin>1)THEN
+    IF(nargin<=0 .OR. nargin>3)THEN
         WRITE(IDVOUT,FMT='(A)')'getpar fatal error: the size of parameters should equal 1'
         STOP
     ELSEIF(nargin==1)THEN
         CALL getarg(1,FLAG)
+        OFFSET=REAL(0)
+        NSLICE=200
+    ELSEIF(nargin==2)THEN
+        CALL getarg(1,FLAG)
+        CALL getarg(2,XOFFSET)
+        READ(XOFFSET,*) OFFSET
+        NSLICE=200
+    ELSEIF(nargin==3)THEN
+        CALL getarg(1,FLAG)
+        CALL getarg(2,XOFFSET)
+        CALL getarg(3,XNSLICE)
+        READ(XOFFSET,*) OFFSET
+        READ(XNSLICE,*) NSLICE
     ENDIF
 
     DDP=118
@@ -176,18 +194,27 @@ program GETPAR
     WRITE(DDP,FMT='(A)'),"1   = ILINE (set to 1 to evaluate E along a line)"
 
     IF(FLAG=='x')THEN
-        WRITE(DDP,FMT=1080),REAL(0),YMIN,ZMIN,REAL(0),YMAX,ZMAX,&
+        WRITE(DDP,FMT=1080),OFFSET,YMIN*0.99,ZMIN*0.99,OFFSET,YMAX*0.99,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
     ENDIF
 
     IF(FLAG=='y')THEN
-        WRITE(DDP,FMT=1081),XMIN,REAL(0),ZMIN,XMAX,REAL(0),ZMAX,&
+        WRITE(DDP,FMT=1081),XMIN*0.99,OFFSET,ZMIN*0.99,XMAX*0.99,OFFSET,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
     ENDIF
 
     IF(FLAG=='z')THEN
-        WRITE(DDP,FMT=1082),XMIN,YMIN,REAL(0),XMAX,YMAX,REAL(0),&
+        WRITE(DDP,FMT=1082),XMIN*0.99,YMIN*0.99,OFFSET,XMAX*0.99,YMAX*0.99,OFFSET,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
+    ENDIF
+
+    IF(FLAG=='i')THEN
+        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)'), 'XMIN',XMIN,' YMIN',YMIN,' ZMIN',ZMIN
+        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)'), 'XMAX',XMAX,' YMAX',YMAX,' ZMAX',ZMAX
+        WRITE(IDVOUT, '(A)'), '>getpar i --> get the information of this program'
+        WRITE(IDVOUT, '(A)'), '>getpar x/y/z --> create corresponding plane ddpostprocess.par'
+        WRITE(IDVOUT, '(A)'), '>getpar x/y/z offset --> create corresponding plane ddpostprocess.par with offset'
+        WRITE(IDVOUT, '(A)'), '>getpar x/y/z offset slice --> create corresponding plane ddpostprocess.par with offset and slice'
     ENDIF
 
     CLOSE(DDP)
@@ -195,13 +222,13 @@ program GETPAR
 
 
 
-1080 FORMAT(F3.1,2F9.5,F4.1,2F8.5,' 1 200 200 = XMIN(',F8.5,'),YMIN(',F8.5&
+1080 FORMAT(F3.1,2F9.5,F4.1,2F8.5,' 1 ',2I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
-1081 FORMAT(F8.5,F4.1,F9.5,F8.5,F4.1,F8.5,' 200 1 200 = XMIN(',F8.5,'),YMIN(',F8.5&
+1081 FORMAT(F8.5,F4.1,F9.5,F8.5,F4.1,F8.5,' ',I4,' 1 ',I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
-1082 FORMAT(F8.5,F9.5,F4.1,2F8.5,F4.1,' 200 200 1 = XMIN(',F8.5,'),YMIN(',F8.5&
+1082 FORMAT(F8.5,F9.5,F4.1,2F8.5,F4.1,' ',2I4,' 1 = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
 end program GETPAR

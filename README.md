@@ -19,6 +19,13 @@ OPENMP = -fopenmp
 设置完成之后，使用`mingw32-make all`即可编译出ddscat, ddpostprocess, vtrconvert...等等软件。
 
 
+#### 使用getpar生成ddpostprocess.par
+- `getpar i` 生成如何计算的电场的尺寸以及如何使用的参数
+- `getpar x/y/z` 使用默认offset=0和slice=200生成默认的不同平面的ddpostprocess.par
+- `getpar x/y/z offset[real]` 使用自定义offset和默认slice=200生成默认的不同平面的ddpostprocess.par
+- `getpar x/y/z offset[real] slice[int]` 使用自定义offset和slice生成默认的不同平面的ddpostprocess.par
+
+
 #### 新的ddpostprocess(*.exe)对于ddpostprocess.par的编写
 
 ```
