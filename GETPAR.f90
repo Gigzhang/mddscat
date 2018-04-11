@@ -224,13 +224,13 @@ program GETPAR
 
 
 
-1080 FORMAT(3F9.5,3F8.5,' 1 ',2I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
+1080 FORMAT(6F9.5,' 1 ',2I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
-1081 FORMAT(3F9.5,3F8.5,' ',I4,' 1 ',I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
+1081 FORMAT(6F9.5,' ',I4,' 1 ',I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
-1082 FORMAT(3F9.5,3F8.5,' ',2I4,' 1 = XMIN(',F8.5,'),YMIN(',F8.5&
+1082 FORMAT(6F9.5,' ',2I4,' 1 = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
 end program GETPAR
