@@ -187,27 +187,29 @@ program GETPAR
 
     DDP=118
     OPEN(UNIT=DDP,FILE='ddpostprocess.par')
-    WRITE(DDP,FMT='(A)'),&
-    "'w000r000k000.E1'            = name of file with E stored"
-    WRITE(DDP,FMT='(A)'),&
-    "'VTRoutput'                  = prefix for name of VTR output files"
-    WRITE(DDP,FMT='(A)'),"0   = IVTR (set to 1 to create VTR output)"
-    WRITE(DDP,FMT='(A)'),"1   = ILINE (set to 1 to evaluate E along a line)"
-
+    WRITE(DDP,FMT='(A)'),"'w000r000k000.E1'            = name of file with E stored"
+    WRITE(DDP,FMT='(A)'),"'VTRoutput'                  = prefix for name of VTR output files"
+    
+    
     IF(FLAG=='x')THEN
         WRITE(SLICESETTING,FMT=1080),OFFSET,YMIN*0.99,ZMIN*0.99,OFFSET,YMAX*0.99,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
+        WRITE(DDP,FMT='(A)'),"1   = IVTR (set to 1 to create VTR output)"
     ENDIF
 
     IF(FLAG=='y')THEN
         WRITE(SLICESETTING,FMT=1081),XMIN*0.99,OFFSET,ZMIN*0.99,XMAX*0.99,OFFSET,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
+        WRITE(DDP,FMT='(A)'),"0   = IVTR (set to 1 to create VTR output)"
     ENDIF
 
     IF(FLAG=='z')THEN
         WRITE(SLICESETTING,FMT=1082),XMIN*0.99,YMIN*0.99,OFFSET,XMAX*0.99,YMAX*0.99,OFFSET,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
+        WRITE(DDP,FMT='(A)'),"0   = IVTR (set to 1 to create VTR output)"
     ENDIF
+
+    WRITE(DDP,FMT='(A)'),"1   = ILINE (set to 1 to evaluate E along a line)"
 	WRITE(DDP,'(A)'), adjustl(trim(SLICESETTING))
 
     IF(FLAG=='i')THEN
@@ -219,6 +221,7 @@ program GETPAR
         WRITE(IDVOUT, '(A)'), '>getpar x/y/z offset slice --> create corresponding plane ddpostprocess.par with offset and slice'
     ENDIF
 
+    
     CLOSE(DDP)
     WRITE(IDVOUT,FMT='(A,A)'),'>GETPAR create ddpostprocess.par successfully with getpar of ',FLAG
 
