@@ -109,28 +109,30 @@ MKL_m = mkl_dfti.mod
 #     sp + no MKL + no OpenMP + no MPI
 
 # define the following:
-PRECISION	= sp
-CXFFTMKL.f	= cxfft3_mkl_fake.f90
-CXFFTMKL.o	= cxfft3_mkl_fake.o
-MKLM		=
-DOMP		= -Dopenmp
-OPENMP		= -fopenmp
-MPI.f		= mpi_fake.f90
-MPI.o		= mpi_fake.o
-DMPI		= 
-FC		= gfortran
-FFLAGS		= -O2
-LFLAGS	 	=  -static-libgcc -static-libgfortran
 
-# 1.b  gfortran compiler
-#     dp + no MKL + no OpenMP + no MPI
-
-# define the following:
 #PRECISION	= sp
 #CXFFTMKL.f	= cxfft3_mkl_fake.f90
 #CXFFTMKL.o	= cxfft3_mkl_fake.o
 #MKLM		=
-#DOMP		=
+#DOMP		= -Dopenmp
+#OPENMP		= -fopenmp
+#MPI.f		= mpi_fake.f90
+#MPI.o		= mpi_fake.o
+#DMPI		= 
+#FC		= gfortran
+#FFLAGS		= -O2
+#LFLAGS	 	=  -static-libgcc -static-libgfortran
+
+#
+## 1.b  gfortran compiler
+##     dp + no MKL + no OpenMP + no MPI
+#
+## define the following:
+##PRECISION	= sp
+##CXFFTMKL.f	= cxfft3_mkl_fake.f90
+##CXFFTMKL.o	= cxfft3_mkl_fake.o
+##MKLM		=
+##DOMP		=
 #OPENMP		=
 #MPI.f		= mpi_fake.f90
 #MPI.o		= mpi_fake.o
@@ -199,18 +201,18 @@ LFLAGS	 	=  -static-libgcc -static-libgfortran
 #     sp + MKL + no OpenMP + no MPI,
 
 # define the following:
-#PRECISION	= sp
-#CXFFTMKL.f	= $(MKL_f)
-#CXFFTMKL.o	= $(MKL_o)
-#MKLM		= $(MKL_m)
-#DOMP		=
-#OPENMP		=
-#MPI.f		= mpi_fake.f90
-#MPI.o		= mpi_fake.o
-#DMPI		=
-#FC		= ifort
-#FFLAGS		= -O2
-#LFLAGS	 	=
+PRECISION	= sp
+CXFFTMKL.f	= $(MKL_f)
+CXFFTMKL.o	= $(MKL_o)
+MKLM		= $(MKL_m)
+DOMP		= -Dopenmp
+OPENMP		= -openmp
+MPI.f		= mpi_fake.f90
+MPI.o		= mpi_fake.o
+DMPI		=
+FC		= ifort
+FFLAGS		= -O2 -I${MKLROOT}/include
+LFLAGS	 	=  -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_lp64.a ${MKLROOT}/lib/intel64/libmkl_intel_thread.a ${MKLROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -liomp5 -lpthread -lm -ldl 
 
 #----------------------------------------------------------------------
 # 6.  ifort compiler
@@ -251,8 +253,7 @@ LFLAGS	 	=  -static-libgcc -static-libgfortran
 #DMPI		=
 #FC		= ifort
 #FFLAGS		= -O2
-#LFLAGS		= -traceback -lmkl_em64t -lmkl_intel_thread -lmkl_core \
-#		-lguide -lpthread -lmkl_intel_lp64
+#LFLAGS		= -traceback -mkl_em64t -lguide -lmkl_intel_thread -lmkl_core -lpthread -lmkl_intel_lp64
 
 #----------------------------------------------------------------------
 # 8.  ifort compiler (via mpif90)
