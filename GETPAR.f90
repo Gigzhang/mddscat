@@ -216,7 +216,7 @@ program GETPAR
     ENDIF
 
     WRITE(DDP,FMT='(A)') "1   = ILINE (set to 1 to evaluate E along a line)"
-	WRITE(DDP,'(A)') adjustl(trim(SLICESETTING))
+	WRITE(DDP,FMT='(A)') adjustl(trim(SLICESETTING))
 
     IF(FLAG=='i')THEN
         WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)') 'XMIN',XMIN,' YMIN',YMIN,' ZMIN',ZMIN
