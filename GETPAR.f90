@@ -187,43 +187,50 @@ program GETPAR
 
     DDP=118
     OPEN(UNIT=DDP,FILE='ddpostprocess.par')
-    WRITE(DDP,FMT='(A)'),"'w000r000k000.E1'            = name of file with E stored"
-    WRITE(DDP,FMT='(A)'),"'VTRoutput'                  = prefix for name of VTR output files"
+    WRITE(DDP,FMT='(A)') "'w000r000k000.E1'            = name of file with E stored"
+    WRITE(DDP,FMT='(A)') "'VTRoutput'                  = prefix for name of VTR output files"
     
-    
+    !! Usage of WRITE FUNCTION https://zhidao.baidu.com/question/241532142196844644.html
     IF(FLAG=='x')THEN
-        WRITE(SLICESETTING,FMT=1080),OFFSET,YMIN*0.99,ZMIN*0.99,OFFSET,YMAX*0.99,ZMAX*0.99,NSLICE,NSLICE,&
+        WRITE(SLICESETTING,FMT=1080) OFFSET,YMIN*0.99,ZMIN*0.99,OFFSET,YMAX*0.99,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
-        WRITE(DDP,FMT='(A)'),"1   = IVTR (set to 1 to create VTR output)"
+        WRITE(DDP,FMT='(A)') "1   = IVTR (set to 1 to create VTR output)"
     ENDIF
 
     IF(FLAG=='y')THEN
-        WRITE(SLICESETTING,FMT=1081),XMIN*0.99,OFFSET,ZMIN*0.99,XMAX*0.99,OFFSET,ZMAX*0.99,NSLICE,NSLICE,&
+        WRITE(SLICESETTING,FMT=1081) XMIN*0.99,OFFSET,ZMIN*0.99,XMAX*0.99,OFFSET,ZMAX*0.99,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
-        WRITE(DDP,FMT='(A)'),"0   = IVTR (set to 1 to create VTR output)"
+        WRITE(DDP,FMT='(A)') "1   = IVTR (set to 1 to create VTR output)"
     ENDIF
 
     IF(FLAG=='z')THEN
-        WRITE(SLICESETTING,FMT=1082),XMIN*0.99,YMIN*0.99,OFFSET,XMAX*0.99,YMAX*0.99,OFFSET,NSLICE,NSLICE,&
+        WRITE(SLICESETTING,FMT=1082) XMIN*0.99,YMIN*0.99,OFFSET,XMAX*0.99,YMAX*0.99,OFFSET,NSLICE,NSLICE,&
         XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
-        WRITE(DDP,FMT='(A)'),"0   = IVTR (set to 1 to create VTR output)"
+        WRITE(DDP,FMT='(A)') "1   = IVTR (set to 1 to create VTR output)"
     ENDIF
 
-    WRITE(DDP,FMT='(A)'),"1   = ILINE (set to 1 to evaluate E along a line)"
-	WRITE(DDP,'(A)'), adjustl(trim(SLICESETTING))
+    IF(FLAG=='a')THEN
+        WRITE(SLICESETTING,FMT=1083) XMIN*0.99,YMIN*0.99,ZMIN*0.99,XMAX*0.99,YMAX*0.99,ZMAX*0.99,NSLICE,NSLICE,NSLICE,&
+        XMIN,YMIN,ZMIN,XMAX,YMAX,ZMAX
+        WRITE(DDP,FMT='(A)') "1   = IVTR (set to 1 to create VTR output)"
+    ENDIF
+
+    WRITE(DDP,FMT='(A)') "1   = ILINE (set to 1 to evaluate E along a line)"
+	WRITE(DDP,'(A)') adjustl(trim(SLICESETTING))
 
     IF(FLAG=='i')THEN
-        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)'), 'XMIN',XMIN,' YMIN',YMIN,' ZMIN',ZMIN
-        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)'), 'XMAX',XMAX,' YMAX',YMAX,' ZMAX',ZMAX
-        WRITE(IDVOUT, '(A)'), '>getpar i --> get the information of this program'
-        WRITE(IDVOUT, '(A)'), '>getpar x/y/z --> create corresponding plane ddpostprocess.par'
-        WRITE(IDVOUT, '(A)'), '>getpar x/y/z offset --> create corresponding plane ddpostprocess.par with offset'
-        WRITE(IDVOUT, '(A)'), '>getpar x/y/z offset slice --> create corresponding plane ddpostprocess.par with offset and slice'
+        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)') 'XMIN',XMIN,' YMIN',YMIN,' ZMIN',ZMIN
+        WRITE(IDVOUT, '(A,F9.5,A,F9.5,A,F9.5)') 'XMAX',XMAX,' YMAX',YMAX,' ZMAX',ZMAX
+        WRITE(IDVOUT, '(A)') '>getpar i --> get the information of this program'
+        WRITE(IDVOUT, '(A)') '>getpar a --> create 3d data'
+        WRITE(IDVOUT, '(A)') '>getpar x/y/z --> create corresponding plane ddpostprocess.par'
+        WRITE(IDVOUT, '(A)') '>getpar x/y/z offset --> create corresponding plane ddpostprocess.par with offset'
+        WRITE(IDVOUT, '(A)') '>getpar x/y/z offset slice --> create corresponding plane ddpostprocess.par with offset and slice'
     ENDIF
 
     
     CLOSE(DDP)
-    WRITE(IDVOUT,FMT='(A,A)'),'>GETPAR create ddpostprocess.par successfully with getpar of ',FLAG
+    WRITE(IDVOUT,FMT='(A,A)') '>GETPAR create ddpostprocess.par successfully with getpar of ',FLAG
 
 
 
@@ -236,4 +243,6 @@ program GETPAR
 1082 FORMAT(6F9.5,' ',2I4,' 1 = XMIN(',F8.5,'),YMIN(',F8.5&
     '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 
+1083 FORMAT(6F9.5,' ',3I4,' = XMIN(',F8.5,'),YMIN(',F8.5&
+    '),ZMIN(',F8.5,'),XMAX(',F7.5,'),YMAX(',F7.5,'),ZMAX(',F7.5,'),NAA,NAB,NAC')
 end program GETPAR
